@@ -1,0 +1,22 @@
+{
+  "name": "nadminpanel/blog",
+  "description": "Blog Package For N Admin Panel",
+  "keywords": ["adminpanel","laravel","blog","category","author","news"],
+  "homepage": "https://github.com/nadminpanel/blog",
+  "authors": [
+    {
+      "name": "Pyae Hein",
+      "email": "nnieheayp@yahoo.com"
+    }
+  ],
+  "require": {
+    "nadminpanel/adminpanel": "^0.1.0",
+  },
+  "autoload": {
+    "psr-4": {
+      "NAdminPanel\\Blog\\": "src/"
+    }
+  },
+  "license": "MIT"
+
+}
