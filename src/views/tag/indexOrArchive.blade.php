@@ -1,10 +1,10 @@
-@extends('nadminpanel::backend.admin.common.main')
+@extends('nadminpanel::admin.common.main')
 
 @section('title')
-    @if( active_check(config('nadminpanel.admin_backend_prefix').'/category') == 'active' )
-        Category Index
-    @elseif( active_check(config('nadminpanel.admin_backend_prefix').'/category/archive') == 'active' )
-        Category Archive
+    @if( active_check(config('nadminpanel.admin_backend_prefix').'/tag') == 'active' )
+        Tag Index
+    @elseif( active_check(config('nadminpanel.admin_backend_prefix').'/tag/archive') == 'active' )
+        Tag Archive
     @endif
 @endsection
 
@@ -17,8 +17,8 @@
     <div class="box">
 
         <div class="box-header with-border">
-            <h3 class="box-title">Category{{ (active_check(config('nadminpanel.admin_backend_prefix').'/category') == 'active') ? ' ' : ' Archive ' }}List</h3>
-            <a style="margin-right:5px" class="btn btn-success pull-right " href="{{ route('category.create') }}">Create Category</a>
+            <h3 class="box-title">Tag{{ (active_check(config('nadminpanel.admin_backend_prefix').'/tag') == 'active') ? ' ' : ' Archive ' }}List</h3>
+            <a style="margin-right:5px" class="btn btn-success pull-right " href="{{ route('tag.create') }}">Create Tag</a>
         </div><!-- /.box-header -->
 
         <div class="box-body">
@@ -46,10 +46,10 @@
     <script type="text/javascript">
         $(document).ready(function  (argument) {
 
-        @if(active_check(config('nadminpanel.admin_backend_prefix').'/category') == 'active')
-            var mainUrl="{!! route('category.index') !!}";
-        @elseif(active_check(config('nadminpanel.admin_backend_prefix').'/category/archive') == 'active')
-            var mainUrl = "{!! route('category.archive') !!}";
+        @if(active_check(config('nadminpanel.admin_backend_prefix').'/tag') == 'active')
+            var mainUrl="{!! route('tag.index') !!}";
+        @elseif(active_check(config('nadminpanel.admin_backend_prefix').'/tag/archive') == 'active')
+            var mainUrl = "{!! route('tag.archive') !!}";
         @endif
 
             var table=$('#data_table').DataTable({
@@ -80,7 +80,7 @@
                 toastr.error($msg,'Status', {timeOut: 2000});
             };
 
-            @if(active_check(config('nadminpanel.admin_backend_prefix').'/category') == 'active')
+            @if(active_check(config('nadminpanel.admin_backend_prefix').'/tag') == 'active')
 
                 $('#data_table').on('click','.delete',function (e) {
                 e.preventDefault();
@@ -88,15 +88,15 @@
                     url: mainUrl+"/"+$(this).data('id'),
                     type: 'DELETE',
                     success: function(result) {
-                        successHandler('Successfully Archived Category');
+                        successHandler('Successfully Archived Tag');
                     },
                     error: function (err) {
-                        errorHandler('Error Category. Please reload the page.');
+                        errorHandler('Error Tag. Please reload the page.');
                     }
                 });
             });
 
-            @elseif(active_check(config('nadminpanel.admin_backend_prefix').'/category/archive') == 'active')
+            @elseif(active_check(config('nadminpanel.admin_backend_prefix').'/tag/archive') == 'active')
 
                 $('#data_table').on('click','.unarchive',function (e) {
                     e.preventDefault();
@@ -104,10 +104,10 @@
                         url: mainUrl+"/"+$(this).data('id'),
                         type: 'PATCH',
                         success: function(result) {
-                            successHandler('Successfully Unarchived Category');
+                            successHandler('Successfully Unarchived Tag');
                         },
                         error: function (err) {
-                            errorHandler('Error Category. Try to reload the page or Wait Your connection');
+                            errorHandler('Error Tag. Try to reload the page or Wait Your connection');
                         }
                     });
                 });
@@ -118,10 +118,10 @@
                     url: mainUrl+"/"+$(this).data('id'),
                     type: 'DELETE',
                     success: function(result) {
-                        successHandler('Successfully deleted Category');
+                        successHandler('Successfully deleted Tag');
                     },
                     error: function (err) {
-                        errorHandler('Error Category. Please reload the page.');
+                        errorHandler('Error Tag. Please reload the page.');
                     }
                 });
             });

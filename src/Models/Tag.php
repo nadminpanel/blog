@@ -5,18 +5,19 @@ namespace NAdminPanel\Blog\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Tag extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'name', 'description', 'parent_id', 'position_index', 'show'
+        'name', 'description'
     ];
 
     public function posts()
     {
-        return $this->hasMany('NAdminPanel\Blog\Models\Post');
+        return $this->belongsToMany('NAdminPanel\Blog\Models\Post');
     }
+
 }

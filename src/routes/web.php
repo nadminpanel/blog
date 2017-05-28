@@ -1,16 +1,24 @@
 <?php
 
-Route::group(['middleware' => ['web'], 'namespace' => '\NAdminPanel\Blog\Controllers'], function () {
 
-    Route::group(['middleware' => ['auth', 'admin'], 'prefix' => config('nadminpanel.admin_backend_prefix')], function () {
+Route::group([
 
-        Route::get('category/archive', 'CategoryController@indexArchive')->name('category.archive');
-        Route::delete('category/archive/{archive}', 'CategoryController@destroyArchive')->name('category.archive.delete');
-        Route::match(['put', 'patch'], 'category/archive/{archive}', 'CategoryController@unarchive')->name('category.archive.unarchive');
+    'middleware' => ['web', 'auth', 'admin'],
+    'prefix' => config('nadminpanel.admin_backend_prefix'),
+    'namespace' => '\NAdminPanel\Blog\Controllers'
 
-        Route::resource('category', 'CategoryController');
+], function () {
 
-    });
+    $modules = ['tag', 'category', 'post'];
+
+    foreach ($modules as $module) {
+
+        Route::get($module.'/archive', ucfirst($module).'Controller@indexArchive')->name($module.'.archive');
+        Route::delete($module.'/archive/{archive}', ucfirst($module).'Controller@destroyArchive')->name($module.'.archive.delete');
+        Route::match(['put', 'patch'], $module.'archive/{archive}', ucfirst($module).'Controller@unarchive')->name($module.'.archive.unarchive');
+        Route::resource($module, ucfirst($module).'Controller', ['except' => ['show']]);
+    }
 
 });
+
 
