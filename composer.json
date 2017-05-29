@@ -11,6 +11,7 @@
   ],
   "require": {
     "nadminpanel/adminpanel": "^0.1.0",
+    "unisharp/laravel-filemanager": "^1.7"
   },
   "autoload": {
     "psr-4": {

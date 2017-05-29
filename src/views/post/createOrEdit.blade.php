@@ -13,8 +13,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/datatables.net-bs/css/responsive.bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/summernote-0.8.3/dist/summernote.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/switchery-0.8.2/dist/switchery.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
     <style>
-        .note-group-select-from-files,.note-group-image-url {
+        .note-editor > .form-group {
             margin-right: 0px !important;
             margin-left: 0px !important;
         }
@@ -80,8 +81,8 @@
 
                 <div class="form-group">
                     <label for="published_at" class="col-md-2 control-label">Publish Date</label>
-                    <div class="col-md-9">
-                        <input type="datetime-local" name="published_at" id="published_at" value="{{ (old('published_at') != null) ? old('published_at') : (isset($post->published_at) ? $post->published_at : \Carbon\Carbon::today()->toDateString() ) }}" class="form-control"  />
+                    <div class='col-md-9 '>
+                        <input type="text" name="published_at" id="published_at" value="{{ (old('published_at') != null) ? old('published_at') : (isset($post->published_at) ? $post->published_at : \Carbon\Carbon::today()->toDateString() ) }}" class="form-control"  />
                         @if($errors->has('published_at'))
                             <span class="text-red">{{ $errors->first('published_at') }}</span>
                         @endif
@@ -122,9 +123,64 @@
     <script type="text/javascript" src="{{ asset('backend/plugins/datatables.net-bs/js/dataTables.bootstrap.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/summernote-0.8.3/dist/summernote.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/switchery-0.8.2/dist/switchery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('backend/plugins/moment-develop/min/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('backend/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('plugins/vuejs/vue.min.js') }}"></script>
     <script>
+        $(document).ready(function(){
+
+            // Define function to open filemanager window
+            var lfm = function(options, cb) {
+                var route_prefix = (options && options.prefix) ? options.prefix : '/laravel-filemanager';
+                window.open(route_prefix + '?type=' + options.type || 'file', 'FileManager', 'width=900,height=600');
+                window.SetUrl = cb;
+            };
+
+            // Define LFM summernote button
+            var LFMButton = function(context) {
+                var ui = $.summernote.ui;
+                var button = ui.button({
+                    contents: '<i class="note-icon-picture"></i> ',
+                    tooltip: 'Insert image with filemanager',
+                    click: function() {
+
+                        lfm({type: 'image', prefix: '/laravel-filemanager'}, function(url, path) {
+                            context.invoke('insertImage', url);
+                        });
+
+                    }
+                });
+                return button.render();
+            };
+
+            // Initialize summernote with LFM button in the popover button group
+            // Please note that you can add this button to any other button group you'd like
+            $('#summernote').summernote({
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontstyle',['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['table', ['table']],
+                    ['popovers', ['lfm']],
+                    ['insert',['video','link']],
+                    ['mesc',['codeview','fullscreen']]
+                ],
+                buttons: {
+                    lfm: LFMButton
+                }
+            })
+
+        });
+    </script>
+    <script>
         $(document).ready(function() {
+            $('#published_at').datetimepicker({
+                setDate: new Date()
+            });
             $('#summernote').summernote();
         });
     </script>

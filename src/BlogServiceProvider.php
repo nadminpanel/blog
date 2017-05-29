@@ -21,7 +21,13 @@ class BlogServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->registerProviders();
+    }
 
+
+    private function registerProviders()
+    {
+        $this->app->register('Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider');
     }
 
     private function loadPublishes()

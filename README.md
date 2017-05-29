@@ -7,7 +7,7 @@
 N Admin Panel's blog package, which includes:
 - category
 - author
-- news
+- post
 - advertisement
 - page
 - menu
