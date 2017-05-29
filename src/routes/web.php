@@ -20,15 +20,3 @@ Route::group([
     }
 
 });
-
-Route::group([
-
-    'before' => 'auth',
-    'middleware' => ['web', 'auth', 'admin']
-
-], function () {
-
-    Route::get('/laravel-filemanager', '\Unisharp\Laravelfilemanager\controllers\LfmController@show');
-    Route::post('/laravel-filemanager/upload', '\Unisharp\Laravelfilemanager\controllers\LfmController@upload');
-
-});

@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label for="featured" class="col-md-2 control-label">Feature</label>
                     <div class="col-md-9">
-                        <input name="featured" type="checkbox" class="js-switch" {{ (old('featured') != null) ? ((old('featured') == 'on') ? 'checked' : '') : ((isset($post->featured)) ? (($post->featured == 1) ? 'checked' : '') : 'checked')}} />
+                        <input name="featured" type="checkbox" class="js-switch" {{ (old('featured') != null) ? ((old('featured') == 'on') ? 'checked' : '') : ((isset($post->featured)) ? (($post->featured == 1) ? 'checked' : '') : '')}} />
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                 <div class="form-group">
                     <label for="published_at" class="col-md-2 control-label">Publish Date</label>
                     <div class='col-md-9 '>
-                        <input type="text" name="published_at" id="published_at" value="{{ (old('published_at') != null) ? old('published_at') : (isset($post->published_at) ? $post->published_at : \Carbon\Carbon::today()->toDateString() ) }}" class="form-control"  />
+                        <input type="text" name="published_at" id="published_at" class="form-control"  />
                         @if($errors->has('published_at'))
                             <span class="text-red">{{ $errors->first('published_at') }}</span>
                         @endif
@@ -125,7 +125,6 @@
     <script type="text/javascript" src="{{ asset('backend/plugins/switchery-0.8.2/dist/switchery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/moment-develop/min/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('plugins/vuejs/vue.min.js') }}"></script>
     <script>
         $(document).ready(function(){
 
@@ -141,7 +140,7 @@
                 var ui = $.summernote.ui;
                 var button = ui.button({
                     contents: '<i class="note-icon-picture"></i> ',
-                    tooltip: 'Insert image with filemanager',
+                    tooltip: 'Image',
                     click: function() {
 
                         lfm({type: 'image', prefix: '/laravel-filemanager'}, function(url, path) {
@@ -179,7 +178,7 @@
     <script>
         $(document).ready(function() {
             $('#published_at').datetimepicker({
-                setDate: new Date()
+                defaultDate: new Date()
             });
             $('#summernote').summernote();
         });
@@ -187,13 +186,5 @@
     <script>
         var elem = document.querySelector('.js-switch');
         var switchery = new Switchery(elem);
-    </script>
-    <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                name: '{{ (old('name') != null) ? old('name') : (isset($post->name) ? $post->name : '') }}'
-            }
-        })
     </script>
 @endsection

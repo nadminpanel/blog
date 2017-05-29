@@ -81,13 +81,4 @@
     <script type="text/javascript" src="{{ asset('backend/plugins/datatables.net/js/jquery.dataTables.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/datatables.net-bs/js/dataTables.responsive.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/datatables.net-bs/js/dataTables.bootstrap.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('plugins/vuejs/vue.min.js') }}"></script>
-    <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                name: '{{ (old('name') != null) ? old('name') : (isset($tag->name) ? $tag->name : '') }}'
-            }
-        })
-    </script>
 @endsection
