@@ -1,7 +1,7 @@
 @if( NAdminPanel\AdminPanel\Models\PermissionLabel::exists('post') && (\Auth::user()->hasPermissionTo('show post') || \Auth::user()->hasPermissionTo('create post') || \Auth::user()->hasRole('developer')))
 <li class="{{ active_check(config('nadminpanel.admin_backend_prefix').'/post', true) }} treeview">
     <a href="#">
-        <i class="fa fa-shield"></i>
+        <i class="fa fa-newspaper-o"></i>
         <span>Posts</span>
         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>

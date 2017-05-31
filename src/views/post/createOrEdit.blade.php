@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/summernote-0.8.3/dist/summernote.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/switchery-0.8.2/dist/switchery.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/adminlte/plugins/select2/select2.min.css') }}">
     <style>
         .note-editor > .form-group {
             margin-right: 0px !important;
@@ -71,10 +72,24 @@
                 <div class="form-group">
                     <label for="description" class="col-md-2 control-label">Description<span class="text-red">&nbsp;*</span></label>
                     <div class="col-md-9">
-                        <div id="summernote">{{ (old('description') != null) ? old('description') : (isset($post->description) ? $post->description : '') }}</div>
-                        <input type="hidden" name="description" value=""/>
+                        <div style="display: none" id="summernote">{{ (old('description') != null) ? old('description') : (isset($post->description) ? $post->description : '') }}</div>
+                        <input type="hidden" name="description" id="description" value=""/>
                         @if($errors->has('description'))
                             <span class="text-red">{{ $errors->first('description') }}</span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="category" class="col-md-2 control-label">Category</label>
+                    <div class='col-md-9 '>
+                        <select title="category" name="category" class="form-control">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ (old('category') != null) ? ((old('category') == $category->id) ? 'selected' : '') : ((isset($post)) ? (($post->category_id == $category->id) ? "selected" : "") : "" )}}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        @if($errors->has('category'))
+                            <span class="text-red">{{ $errors->first('category') }}</span>
                         @endif
                     </div>
                 </div>
@@ -125,6 +140,7 @@
     <script type="text/javascript" src="{{ asset('backend/plugins/switchery-0.8.2/dist/switchery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/moment-develop/min/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('backend/adminlte/plugins/select2/select2.full.min.js') }}"></script>
     <script>
         $(document).ready(function(){
 
@@ -152,9 +168,14 @@
                 return button.render();
             };
 
+            var summer = $('#summernote');
+            var description = $('#description');
             // Initialize summernote with LFM button in the popover button group
             // Please note that you can add this button to any other button group you'd like
-            $('#summernote').summernote({
+            summer.summernote({
+                height: 180,
+                minHeight: null,
+                maxHeight: null,
                 toolbar: [
                     ['style', ['bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -170,17 +191,31 @@
                 ],
                 buttons: {
                     lfm: LFMButton
+                },
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        description.val(contents);
+                    }
                 }
-            })
+            });
+
+            var markupStr = '{!! (old('description', (isset($post)) ? $post->description : '')) !!}';
+            summer.summernote('code', markupStr);
+            description.val(markupStr);
 
         });
     </script>
     <script>
         $(document).ready(function() {
             $('#published_at').datetimepicker({
+                @if(old('published_at') != null || isset($post))
+                defaultDate: '{{ old('published_at', (isset($post)) ? $post->published_at : '') }}'
+                @else
                 defaultDate: new Date()
+                @endif
             });
-            $('#summernote').summernote();
+
+            $('select').select2();
         });
     </script>
     <script>

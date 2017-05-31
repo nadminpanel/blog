@@ -5,6 +5,7 @@ namespace NAdminPanel\Blog\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use NAdminPanel\AdminPanel\Repositories\AdminPanelRepository;
+use NAdminPanel\Blog\Models\Category;
 use NAdminPanel\Blog\Models\Post;
 use NAdminPanel\Blog\Requests\PostRequest;
 use Yajra\Datatables\Facades\Datatables;
@@ -32,6 +33,9 @@ class PostController extends Controller
                 ->addColumn('action', function ($post) {
                     return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
                 })
+                ->addColumn('short_description', function ($post) {
+                    return ((strlen(strip_tags($post->description)) > 200) ? (mb_substr(strip_tags($post->description), 0, 200).'...') : strip_tags($post->description));
+                })
                 ->addIndexColumn()
                 ->rawColumns(['action'])
                 ->make(true);
@@ -43,7 +47,8 @@ class PostController extends Controller
     {
         $this->adminRepo->isHasPermissionAccess('create'.$this->accessPermission);
 
-        return view($this->viewDir.'post.createOrEdit');
+        $categories = Category::all();
+        return view($this->viewDir.'post.createOrEdit', compact('categories'));
     }
 
     public function store(PostRequest $request)
@@ -51,8 +56,12 @@ class PostController extends Controller
         $this->adminRepo->isHasPermissionAccess('create'.$this->accessPermission);
 
         $post = new Post;
-        $post->name = $request->input('name');
+        $post->featured = ($request->has('featured') && $request->input('featured') == 'on') ? true : false;
+        $post->title = $request->input('title');
         $post->description = $request->input('description');
+        $post->user_id = auth()->user()->id;
+        $post->category_id = $request->input('category');
+        $post->published_at = $request->input('published_at');
         $post->save();
 
         return redirect()->route('post.index');
@@ -67,8 +76,9 @@ class PostController extends Controller
     {
         $this->adminRepo->isHasPermissionAccess('edit'.$this->accessPermission);
 
+        $categories = Category::all();
         $post = Post::find($id);
-        return view($this->viewDir.'post.createOrEdit', compact('post'));
+        return view($this->viewDir.'post.createOrEdit', compact('post', 'categories'));
     }
 
     public function update(PostRequest $request, $id)

@@ -33,6 +33,15 @@ $ php artisan vendor:publish
 $ php artisan migrate
 ```
 
+4) Add category permission seeds in database/seeds/DatabaseSeeder.php
+```
+$this->call(CategoryPermissionSeeder::class);
+```
+Run seed command
+```
+$ php artisan db:seed
+```
+
 ## Credits
 
 - [Pyae Hein][link-author]

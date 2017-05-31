@@ -1,0 +1,19 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use NAdminPanel\AdminPanel\Models\PermissionLabel;
+
+class CategoryPermissionSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        PermissionLabel::create(['name' => 'category']);
+        PermissionLabel::create(['name' => 'post']);
+        PermissionLabel::create(['name' => 'tag']);
+    }
+}

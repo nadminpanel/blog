@@ -26,7 +26,8 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Title</th>
+                    <th>Short Description</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -60,7 +61,8 @@
                 },
                 columns: [
                     { data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false, searchable: false },
-                    { data: 'name', name: 'name'},
+                    { data: 'title', name: 'title'},
+                    { data: 'short_description', name: 'short_description', orderable: false, searchable: false},
                     { data: 'action', name : 'action', orderable: false, searchable: false}
                 ],
                 order: [[ 1, "asc" ]]

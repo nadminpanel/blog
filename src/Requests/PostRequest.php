@@ -27,11 +27,11 @@ class PostRequest extends FormRequest
 
         if($this->method() == 'PUT' || $this->method() == 'PATCH') {
 
-            $name = 'required|max:15|unique:posts,title,'.$id;
+            $name = 'required|max:255|unique:posts,title,'.$id;
 
         } else {
 
-            $name = 'required|max:15|unique:posts,title';
+            $name = 'required|max:255|unique:posts,title';
 
         }
 

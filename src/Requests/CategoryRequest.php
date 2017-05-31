@@ -27,11 +27,11 @@ class CategoryRequest extends FormRequest
 
         if($this->method() == 'PUT' || $this->method() == 'PATCH') {
 
-            $name = 'required|max:15|regex:"^[a-zA-Z]+$"|unique:categories,name,'.$id;
+            $name = 'required|max:255|regex:"^[a-zA-Z]+$"|unique:categories,name,'.$id;
 
         } else {
 
-            $name = 'required|max:15|regex:"^[a-zA-Z]+$"|unique:categories,name';
+            $name = 'required|max:255|regex:"^[a-zA-Z]+$"|unique:categories,name';
 
         }
 

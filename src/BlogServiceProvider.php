@@ -33,7 +33,8 @@ class BlogServiceProvider extends ServiceProvider
     private function loadPublishes()
     {
         $this->publishes([
-            __DIR__ . '/public' => public_path()
+            __DIR__ . '/public' => public_path(),
+            __DIR__ . '/seeds/CategoryPermissionSeeder.php.slug' => database_path('seeds/CategoryPermissionSeeder.php')
         ]);
     }
 }

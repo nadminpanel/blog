@@ -18,7 +18,9 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->longText('description')->nullable()->default(null);
             $table->unsignedInteger('parent_id')->nullable()->default(null);
-            $table->unsignedInteger('position_index')->nullable()->default(null);
+            $table->unsignedInteger('depth')->nullable()->default(null);
+            $table->integer('left')->nullable()->default(null);
+            $table->integer('right')->nullable()->default(null);
             $table->boolean('show')->default(false);
             $table->timestamps();
             $table->softDeletes();

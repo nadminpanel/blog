@@ -27,11 +27,11 @@ class TagRequest extends FormRequest
 
         if($this->method() == 'PUT' || $this->method() == 'PATCH') {
 
-            $name = 'required|max:15|unique:tags,name,'.$id;
+            $name = 'required|max:255|unique:tags,name,'.$id;
 
         } else {
 
-            $name = 'required|max:15|unique:tags,name';
+            $name = 'required|max:255|unique:tags,name';
 
         }
 
