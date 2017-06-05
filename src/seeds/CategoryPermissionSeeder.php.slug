@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use NAdminPanel\AdminPanel\Models\PermissionLabel;
+use NAdminPanel\AdminPanel\Models\Role;
 
 class CategoryPermissionSeeder extends Seeder
 {
@@ -15,5 +16,7 @@ class CategoryPermissionSeeder extends Seeder
         PermissionLabel::create(['name' => 'category']);
         PermissionLabel::create(['name' => 'post']);
         PermissionLabel::create(['name' => 'tag']);
+
+        Role::create(['name' => 'editor', 'display_name' => 'Editor']);
     }
 }

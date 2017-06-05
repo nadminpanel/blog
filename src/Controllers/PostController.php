@@ -27,9 +27,14 @@ class PostController extends Controller
     {
         $this->adminRepo->isHasPermissionAccess('show'.$this->accessPermission, $request);
 
+        $user = auth()->user();
+
         if ($request->ajax()) {
-            if($post->)
-            $query = Post::all();
+            if ($user->hasRole('developer') || $user->hasRole('editor')) {
+                $query = Post::all();
+            } else {
+                $query = Post::where('user_id', $user->id)->get()->all();
+            }
             return Datatables::of($query)
                 ->addColumn('action', function ($post) {
                     return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
@@ -79,9 +84,15 @@ class PostController extends Controller
     {
         $this->adminRepo->isHasPermissionAccess('edit'.$this->accessPermission);
 
-        $categories = Category::all();
         $post = Post::find($id);
-        return view($this->viewDir.'post.createOrEdit', compact('post', 'categories'));
+        $user = auth()->user();
+
+        if($post->user == $user || $user->hasRole('developer') || $user->hasRole('editor')) {
+            $categories = Category::all();
+            return view($this->viewDir.'post.createOrEdit', compact('post', 'categories'));
+        } else {
+            return redirect()->to(config('nadminpanel.admin_landing_link'));
+        }
     }
 
     public function update(PostRequest $request, $id)
@@ -89,7 +100,9 @@ class PostController extends Controller
         $this->adminRepo->isHasPermissionAccess('edit'.$this->accessPermission);
 
         $post = Post::find($id);
-        if($post)
+        $user = auth()->user();
+
+        if($post && ($post->user == $user || $user->hasRole('developer') || $user->hasRole('editor')))
         {
             $post->featured = ($request->has('featured') && $request->input('featured') == 'on') ? true : false;
             $post->title = $request->input('title');
@@ -100,17 +113,26 @@ class PostController extends Controller
             $post->source = $request->input('source');
             $post->published_at = $request->input('published_at');
             $post->save();
-        }
 
-        return redirect()->route('post.index');
+            return redirect()->route('post.index');
+        } else {
+            return redirect()->to(config('nadminpanel.admin_landing_link'));
+        }
     }
 
     public function destroy($id)
     {
         $this->adminRepo->isHasPermissionAccess('delete'.$this->accessPermission);
 
-        Post::destroy($id);
-        return response()->json(['status'=>'deleted']);
+        $post = Post::find($id);
+        $user = auth()->user();
+
+        if($post && ($post->user == $user || $user->hasRole('developer') || $user->hasRole('editor'))) {
+            Post::destroy($id);
+            return response()->json(['status'=>'deleted']);
+        } else {
+            return redirect()->to(config('nadminpanel.admin_landing_link'));
+        }
     }
 
     public function indexArchive(Request $request)
@@ -138,9 +160,16 @@ class PostController extends Controller
     {
         $this->adminRepo->isHasPermissionAccess('edit'.$this->accessPermission);
 
-        Post::onlyTrashed()->findOrFail($id)->restore();
-        if ($request->ajax()) {
-            return response()->json(['status' => 'unarchived']);
+        $post = Post::onlyTrashed()->find($id);
+        $user = auth()->user();
+
+        if($post && ($post->user == $user || $user->hasRole('developer') || $user->hasRole('editor'))) {
+            Post::onlyTrashed()->findOrFail($id)->restore();
+            if ($request->ajax()) {
+                return response()->json(['status' => 'unarchived']);
+            }
+        } else {
+            return redirect()->to(config('nadminpanel.admin_landing_link'));
         }
     }
 
@@ -148,9 +177,16 @@ class PostController extends Controller
     {
         $this->adminRepo->isHasPermissionAccess('delete'.$this->accessPermission);
 
-        Post::onlyTrashed()->findOrFail($id)->forceDelete();
-        if ($request->ajax()) {
-            return response()->json(['status'=>'deleted']);
+        $post = Post::onlyTrashed()->find($id);
+        $user = auth()->user();
+
+        if($post && ($post->user == $user || $user->hasRole('developer') || $user->hasRole('editor'))) {
+            Post::onlyTrashed()->findOrFail($id)->forceDelete();
+            if ($request->ajax()) {
+                return response()->json(['status' => 'deleted']);
+            }
+        } else {
+            return redirect()->to(config('nadminpanel.admin_landing_link'));
         }
     }
 }

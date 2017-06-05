@@ -114,7 +114,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div id="img-holder" class="form-group">
                     <label for="feature_image" class="col-md-2 control-label">Feature Image</label>
                     <div class="col-md-9">
                         <div class="input-group">
@@ -126,6 +126,9 @@
                             <input readonly id="thumbnail" class="form-control" {!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? 'value="'.$post->feature_image_path.'"' : '' ) !!} type="text" name="feature_image_path">
                         </div>
                         <img id="holder" {!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? 'src="'.url($post->feature_image_path).'"' : '' ) !!} style="margin-top: 10px; max-height: 200px;">
+                        @if( old('feature_image_path') != null || (isset($post) && $post->feature_image_path != null))
+                        <buttons type="button" id="feature_remove" class="btn btn-danger">Remove</buttons>
+                        @endif
                     </div>
                 </div>
 
@@ -239,5 +242,20 @@
     <script>
         var elem = document.querySelector('.js-switch');
         var switchery = new Switchery(elem);
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            var thumbnail = $('#thumbnail');
+            $('#feature_remove').on('click', function () {
+                $('#holder').removeAttr('src');
+                thumbnail.val('');
+                $(this).hide();
+            });
+
+            $('#img-holder').on('change', thumbnail, function () {
+                $('#feature_remove').show();
+            });
+        });
     </script>
 @endsection

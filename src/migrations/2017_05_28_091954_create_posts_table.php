@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->boolean('featured')->default(false);
             $table->Integer('category_id')->unsigned();
             $table->Integer('user_id')->unsigned();
-            $table->text('feature_image_url')->nullable()->default(null);
+            $table->text('feature_image_path')->nullable()->default(null);
             $table->text('source')->nullable()->default(null);
             $table->dateTime('published_at')->nullable()->default(null);
             $table->timestamps();
