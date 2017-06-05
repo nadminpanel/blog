@@ -115,6 +115,21 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="feature_image" class="col-md-2 control-label">Feature Image</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <a id="feature_image" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+                                <i class="fa fa-picture-o"></i> Choose
+                            </a>
+                        </span>
+                            <input readonly id="thumbnail" class="form-control" {!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? 'value="'.$post->feature_image_path.'"' : '' ) !!} type="text" name="feature_image_path">
+                        </div>
+                        <img id="holder" {!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? 'src="'.url($post->feature_image_path).'"' : '' ) !!} style="margin-top: 10px; max-height: 200px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-md-2 control-label"></label>
                     <div class="col-md-9">
                         @if(!isset($post))
@@ -141,8 +156,11 @@
     <script type="text/javascript" src="{{ asset('backend/plugins/moment-develop/min/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/adminlte/plugins/select2/select2.full.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script>
         $(document).ready(function(){
+
+            $('#feature_image').filemanager('image');
 
             // Define function to open filemanager window
             var lfm = function(options, cb) {

@@ -14,7 +14,7 @@ class Post extends Model
 
     protected $fillable = [
         'title', 'description', 'featured', 'category_id',
-        'user_id', 'source', 'published_at'
+        'user_id', 'source', 'published_at', 'feature_image_path'
     ];
 
     public function category()
@@ -29,11 +29,19 @@ class Post extends Model
 
     public function getPublishedAtAttribute($value)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('m/d/Y g:i A');
+        if($value == null) {
+            return '';
+        } else {
+            return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('m/d/Y g:i A');
+        }
     }
 
     public function setPublishedAtAttribute($value)
     {
-        $this->attributes['published_at'] = Carbon::createFromFormat('m/d/Y g:i A', $value);
+        if($value == '' || $value == null) {
+            $this->attributes['published_at'] = null;
+        } else {
+            $this->attributes['published_at'] = Carbon::createFromFormat('m/d/Y g:i A', $value);
+        }
     }
 }

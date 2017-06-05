@@ -28,13 +28,14 @@ class PostController extends Controller
         $this->adminRepo->isHasPermissionAccess('show'.$this->accessPermission, $request);
 
         if ($request->ajax()) {
+            if($post->)
             $query = Post::all();
             return Datatables::of($query)
                 ->addColumn('action', function ($post) {
                     return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
                 })
                 ->addColumn('short_description', function ($post) {
-                    return ((strlen(strip_tags($post->description)) > 200) ? (mb_substr(strip_tags($post->description), 0, 200).'...') : strip_tags($post->description));
+                    return ((strlen(strip_tags($post->description)) > 130) ? (mb_substr(strip_tags($post->description), 0, 130).'...') : strip_tags($post->description));
                 })
                 ->addIndexColumn()
                 ->rawColumns(['action'])
@@ -61,6 +62,8 @@ class PostController extends Controller
         $post->description = $request->input('description');
         $post->user_id = auth()->user()->id;
         $post->category_id = $request->input('category');
+        $post->feature_image_path = $request->input('feature_image_path');
+        $post->source = $request->input('source');
         $post->published_at = $request->input('published_at');
         $post->save();
 
@@ -88,8 +91,14 @@ class PostController extends Controller
         $post = Post::find($id);
         if($post)
         {
-            $post->name = $request->input('name');
+            $post->featured = ($request->has('featured') && $request->input('featured') == 'on') ? true : false;
+            $post->title = $request->input('title');
             $post->description = $request->input('description');
+            $post->user_id = auth()->user()->id;
+            $post->category_id = $request->input('category');
+            $post->feature_image_path = $request->input('feature_image_path');
+            $post->source = $request->input('source');
+            $post->published_at = $request->input('published_at');
             $post->save();
         }
 
@@ -108,16 +117,20 @@ class PostController extends Controller
     {
         $this->adminRepo->isHasPermissionAccess('show'.$this->accessPermission, $request);
 
-        if($request->ajax()){
+        if ($request->ajax()) {
             $query = Post::onlyTrashed()->get();
             return Datatables::of($query)
                 ->addColumn('action', function ($post) {
-                    return view($this->viewDir.'blog.datatable.post', compact('post'))->render();
+                    return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
+                })
+                ->addColumn('short_description', function ($post) {
+                    return ((strlen(strip_tags($post->description)) > 100) ? (mb_substr(strip_tags($post->description), 0, 100).'...') : strip_tags($post->description));
                 })
                 ->addIndexColumn()
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
         return view($this->viewDir.'post.indexOrArchive');
     }
 
