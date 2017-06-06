@@ -27,13 +27,18 @@ $ composer require nadminpanel/blog
 NAdminPanel\Blog\BlogServiceProvider::class,
 ```
 
-3) Then run a few commands in the terminal:
+3) Change auth user's model in config/auth.php:
+```
+'model' => 'NAdminPanel\Blog\Models\User',
+```
+
+4) Then run a few commands in the terminal:
 ``` bash
 $ php artisan vendor:publish
 $ php artisan migrate
 ```
 
-4) Add category permission seeds in database/seeds/DatabaseSeeder.php
+5) Add category permission seeds in database/seeds/DatabaseSeeder.php
 ```
 $this->call(CategoryPermissionSeeder::class);
 ```

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use NAdminPanel\AdminPanel\Repositories\AdminPanelRepository;
 use NAdminPanel\Blog\Models\Category;
 use NAdminPanel\Blog\Models\Post;
+use NAdminPanel\Blog\Models\Tag;
 use NAdminPanel\Blog\Requests\PostRequest;
 use Yajra\Datatables\Facades\Datatables;
 
@@ -54,7 +55,8 @@ class PostController extends Controller
         $this->adminRepo->isHasPermissionAccess('create'.$this->accessPermission);
 
         $categories = Category::all();
-        return view($this->viewDir.'post.createOrEdit', compact('categories'));
+        $tags = Tag::all();
+        return view($this->viewDir.'post.createOrEdit', compact('categories', 'tags'));
     }
 
     public function store(PostRequest $request)
@@ -89,7 +91,8 @@ class PostController extends Controller
 
         if($post->user == $user || $user->hasRole('developer') || $user->hasRole('editor')) {
             $categories = Category::all();
-            return view($this->viewDir.'post.createOrEdit', compact('post', 'categories'));
+            $tags = Tag::all();
+            return view($this->viewDir.'post.createOrEdit', compact('post', 'categories', 'tags'));
         } else {
             return redirect()->to(config('nadminpanel.admin_landing_link'));
         }

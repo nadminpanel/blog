@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/switchery-0.8.2/dist/switchery.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/adminlte/plugins/select2/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/sliptree-bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css') }}">
     <style>
         .note-editor > .form-group {
             margin-right: 0px !important;
@@ -104,6 +105,15 @@
                     </div>
                 </div>
 
+                @if(isset($post))
+                <div class="form-group">
+                    <label for="source" class="col-md-2 control-label">Author</label>
+                    <div class="col-md-9">
+                        <input type="text" id="author" readonly value="{{ $post->user->name }}" class="form-control" />
+                    </div>
+                </div>
+                @endif
+
                 <div class="form-group">
                     <label for="source" class="col-md-2 control-label">Source</label>
                     <div class="col-md-9">
@@ -111,6 +121,13 @@
                         @if($errors->has('source'))
                             <span class="text-red">{{ $errors->first('source') }}</span>
                         @endif
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tag" class="col-md-2 control-label">Tags</label>
+                    <div class="col-md-9">
+                        <input type="text" name="tag[]" class="form-control" id="tag" value="red,green,blue" />
                     </div>
                 </div>
 
@@ -127,7 +144,7 @@
                         </div>
                         <img id="holder" {!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? 'src="'.url($post->feature_image_path).'"' : '' ) !!} style="margin-top: 10px; max-height: 200px;">
                         @if( old('feature_image_path') != null || (isset($post) && $post->feature_image_path != null))
-                        <buttons type="button" id="feature_remove" class="btn btn-danger">Remove</buttons>
+                        <buttons type="button" id="feature_remove" class="btn btn-danger">X</buttons>
                         @endif
                     </div>
                 </div>
@@ -160,6 +177,7 @@
     <script type="text/javascript" src="{{ asset('backend/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/adminlte/plugins/select2/select2.full.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('vendor/laravel-filemanager/js/lfm.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('backend/plugins/sliptree-bootstrap-tokenfield/dist/bootstrap-tokenfield.min.js') }}"></script>
     <script>
         $(document).ready(function(){
 
@@ -224,6 +242,17 @@
             summer.summernote('code', markupStr);
             description.val(markupStr);
 
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#tag').tokenfield({
+                autocomplete: {
+                    source: ['red','blue','green','yellow','violet','brown','purple','black','white'],
+                    delay: 100
+                },
+                showAutocompleteOnFocus: true
+            })
         });
     </script>
     <script>

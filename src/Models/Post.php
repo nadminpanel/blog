@@ -17,6 +17,11 @@ class Post extends Model
         'user_id', 'source', 'published_at', 'feature_image_path'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('NAdminPanel\AdminPanel\Models\User');
+    }
+
     public function category()
     {
         return $this->belongsTo('NAdminPanel\Blog\Models\Category');
