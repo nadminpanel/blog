@@ -9,6 +9,7 @@
 @endsection
 
 @section('extra-css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/jquery-ui-1.12.1/jquery-ui.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/datatables.net-bs/css/dataTables.bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/datatables.net-bs/css/responsive.bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/summernote-0.8.3/dist/summernote.css') }}">
@@ -16,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/adminlte/plugins/select2/select2.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/sliptree-bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/sliptree-bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css') }}">
     <style>
         .note-editor > .form-group {
             margin-right: 0px !important;
@@ -127,7 +129,7 @@
                 <div class="form-group">
                     <label for="tag" class="col-md-2 control-label">Tags</label>
                     <div class="col-md-9">
-                        <input type="text" name="tag[]" class="form-control" id="tag" value="red,green,blue" />
+                        <input type="text" name="tags" class="form-control" id="tags" value="{{ (old('tags') != null) ? old('tags') : (isset($post) ? $post_tags : '') }}" />
                     </div>
                 </div>
 
@@ -168,6 +170,7 @@
 @endsection
 
 @section('extra-script')
+    <script type="text/javascript" src="{{ asset('backend/plugins/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/datatables.net/js/jquery.dataTables.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/datatables.net-bs/js/dataTables.responsive.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/plugins/datatables.net-bs/js/dataTables.bootstrap.js') }}"></script>
@@ -246,13 +249,25 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('#tag').tokenfield({
+
+            var tag = $('#tags');
+            var tags = {!! json_encode($tags) !!};
+
+            tag.tokenfield({
                 autocomplete: {
-                    source: ['red','blue','green','yellow','violet','brown','purple','black','white'],
+                    source: tags,
                     delay: 100
                 },
                 showAutocompleteOnFocus: true
-            })
+            });
+
+            tag.on('tokenfield:createtoken', function (event) {
+                var existingTokens = $(this).tokenfield('getTokens');
+                $.each(existingTokens, function (index, token) {
+                    if (token.value === event.attrs.value)
+                        event.preventDefault();
+                });
+            });
         });
     </script>
     <script>

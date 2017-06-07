@@ -55,7 +55,7 @@ class PostController extends Controller
         $this->adminRepo->isHasPermissionAccess('create'.$this->accessPermission);
 
         $categories = Category::all();
-        $tags = Tag::all();
+        $tags = Tag::pluck('name')->toArray();
         return view($this->viewDir.'post.createOrEdit', compact('categories', 'tags'));
     }
 
@@ -74,6 +74,18 @@ class PostController extends Controller
         $post->published_at = $request->input('published_at');
         $post->save();
 
+        $tag_names = explode(', ', $request->input('tags'));
+        $tag_ids = [];
+
+        foreach ($tag_names as $tag_name) {
+            $tag = Tag::firstOrCreate([ 'name' => $tag_name ]);
+            $tag_ids[] = $tag->id;
+        }
+
+        if (count($tag_ids) > 0) {
+            $post->tags()->attach($tag_ids);
+        }
+
         return redirect()->route('post.index');
     }
 
@@ -88,11 +100,21 @@ class PostController extends Controller
 
         $post = Post::find($id);
         $user = auth()->user();
+        $post_tags = '';
+
+        $post_tags_all = $post->tags()->pluck('name')->all();
+        foreach ($post_tags_all as $tag_name) {
+            if(strlen($post_tags) != 0) {
+                $post_tags .= ', '.$tag_name;
+            } else {
+                $post_tags .= $tag_name;
+            }
+        }
 
         if($post->user == $user || $user->hasRole('developer') || $user->hasRole('editor')) {
             $categories = Category::all();
-            $tags = Tag::all();
-            return view($this->viewDir.'post.createOrEdit', compact('post', 'categories', 'tags'));
+            $tags = Tag::pluck('name')->toArray();
+            return view($this->viewDir.'post.createOrEdit', compact('post', 'categories', 'tags', 'post_tags'));
         } else {
             return redirect()->to(config('nadminpanel.admin_landing_link'));
         }
@@ -116,6 +138,20 @@ class PostController extends Controller
             $post->source = $request->input('source');
             $post->published_at = $request->input('published_at');
             $post->save();
+
+            $tag_names = explode(', ', $request->input('tags'));
+            $tag_ids = [];
+
+            foreach ($tag_names as $tag_name) {
+                $tag = Tag::firstOrCreate([ 'name' => $tag_name ]);
+                $tag_ids[] = $tag->id;
+            }
+
+            if (count($tag_ids) > 0) {
+                $post->tags()->sync($tag_ids);
+            } else {
+                $post->tags()->detach();
+            }
 
             return redirect()->route('post.index');
         } else {
