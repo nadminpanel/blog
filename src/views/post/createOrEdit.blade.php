@@ -73,6 +73,16 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="title" class="col-md-2 control-label">Slug</label>
+                    <div class="col-md-9">
+                        <input type="text" name="slug" id="slug" placeholder="your-slug-link-like-this (optional)" value="{{ (old('slug') != null) ? old('slug') : (isset($post->slug) ? $post->slug : '') }}" class="form-control" />
+                        @if($errors->has('slug'))
+                            <span class="text-red">{{ $errors->first('slug') }}</span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="description" class="col-md-2 control-label">Description<span class="text-red">&nbsp;*</span></label>
                     <div class="col-md-9">
                         <div style="display: none" id="summernote">{{ (old('description') != null) ? old('description') : (isset($post->description) ? $post->description : '') }}</div>
@@ -142,12 +152,10 @@
                                 <i class="fa fa-picture-o"></i> Choose
                             </a>
                         </span>
-                            <input readonly id="thumbnail" class="form-control" {!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? 'value="'.$post->feature_image_path.'"' : '' ) !!} type="text" name="feature_image_path">
+                            <input readonly id="thumbnail" class="form-control" value="{!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? $post->feature_image_path : '' ) !!}" type="text" name="feature_image_path">
                         </div>
-                        <img id="holder" {!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? 'src="'.url($post->feature_image_path).'"' : '' ) !!} style="margin-top: 10px; max-height: 200px;">
-                        @if( old('feature_image_path') != null || (isset($post) && $post->feature_image_path != null))
-                        <buttons type="button" id="feature_remove" class="btn btn-danger">X</buttons>
-                        @endif
+                        <img id="holder" src="{!! old('feature_image_path', (isset($post) && $post->feature_image_path != null) ? url($post->feature_image_path) : '' ) !!}" style="margin-top: 10px; max-height: 200px;">
+                        <buttons type="button" style="{{ (old('feature_image_path') != null || (isset($post) && $post->feature_image_path != null)) ? : "display: none;" }}" id="feature_remove" class="btn btn-danger">X</buttons>
                     </div>
                 </div>
 

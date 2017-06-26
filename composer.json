@@ -10,8 +10,10 @@
     }
   ],
   "require": {
+    "php": ">=7.0.0",
     "nadminpanel/adminpanel": "^0.1.0",
-    "unisharp/laravel-filemanager": "^1.7"
+    "unisharp/laravel-filemanager": "^1.7",
+    "spatie/laravel-sluggable": "^1.5"
   },
   "autoload": {
     "psr-4": {

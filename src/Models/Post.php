@@ -5,10 +5,12 @@ namespace NAdminPanel\Blog\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasSlug;
 
     protected $dates = ['deleted_at'];
 
@@ -48,5 +50,16 @@ class Post extends Model
         } else {
             $this->attributes['published_at'] = Carbon::createFromFormat('m/d/Y g:i A', $value);
         }
+    }
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
     }
 }

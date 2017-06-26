@@ -16,11 +16,11 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->longText('description')->nullable()->default(null);
-            $table->unsignedInteger('parent_id')->nullable()->default(null);
-            $table->unsignedInteger('depth')->nullable()->default(null);
-            $table->integer('left')->nullable()->default(null);
-            $table->integer('right')->nullable()->default(null);
+            $table->longText('description')->nullable();
+            $table->unsignedInteger('parent_id')->nullable();
+            $table->unsignedInteger('depth')->nullable();
+            $table->integer('left')->nullable();
+            $table->integer('right')->nullable();
             $table->boolean('show')->default(false);
             $table->timestamps();
             $table->softDeletes();

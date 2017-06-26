@@ -28,15 +28,19 @@ class PostRequest extends FormRequest
         if($this->method() == 'PUT' || $this->method() == 'PATCH') {
 
             $name = 'required|max:255|unique:posts,title,'.$id;
+            $slug = 'required|regex:"/^[a-z0-9]+(?:-[a-z0-9]+)*$/"';
 
         } else {
 
             $name = 'required|max:255|unique:posts,title';
+            $slug = '';
 
         }
 
         return [
-            'title'  =>  $name
+            'title'     =>  $name,
+            'slug'      =>  $slug,
+            'published_at' => 'required'
         ];
     }
 }

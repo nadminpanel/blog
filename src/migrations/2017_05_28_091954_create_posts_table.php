@@ -16,13 +16,14 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->text('title');
+            $table->text('slug')->nullable();
             $table->longText('description');
             $table->boolean('featured')->default(false);
             $table->Integer('category_id')->unsigned();
             $table->Integer('user_id')->unsigned();
-            $table->text('feature_image_path')->nullable()->default(null);
-            $table->text('source')->nullable()->default(null);
-            $table->dateTime('published_at')->nullable()->default(null);
+            $table->text('feature_image_path')->nullable();
+            $table->text('source')->nullable();
+            $table->dateTime('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

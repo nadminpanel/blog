@@ -9,13 +9,13 @@
     </a>
     <ul class="treeview-menu">
         @if(\Auth::user()->hasPermissionTo('show category') || \Auth::user()->hasRole('developer'))
-            <li class="{{ active_check(config('nadminpanel.admin_backend_prefix').'/category') }}"><a href="{{ route('category.index') }}"><i class="fa fa-circle-o"></i> Category List</a></li>
+            <li class="{{ active_route('category.index') }}"><a href="{{ route('category.index') }}"><i class="fa fa-circle-o"></i> Category List</a></li>
         @endif
         @if(\Auth::user()->hasPermissionTo('create category') || \Auth::user()->hasRole('developer'))
-            <li class="{{ active_check(config('nadminpanel.admin_backend_prefix').'/category/create') }}"><a href="{{ route('category.create') }}"><i class="fa fa-circle-o"></i> Create Category</a></li>
+            <li class="{{ active_route('category.create') }}"><a href="{{ route('category.create') }}"><i class="fa fa-circle-o"></i> Create Category</a></li>
         @endif
         @if(\Auth::user()->hasPermissionTo('show category') || \Auth::user()->hasRole('developer'))
-            <li class="{{ active_check(config('nadminpanel.admin_backend_prefix').'/category/archive') }}"><a href="{{ route('category.archive') }}"><i class="fa fa-circle-o"></i> Archive Category List</a></li>
+            <li class="{{ active_route('category.archive') }}"><a href="{{ route('category.archive') }}"><i class="fa fa-circle-o"></i> Archive Category List</a></li>
         @endif
     </ul>
 </li>
