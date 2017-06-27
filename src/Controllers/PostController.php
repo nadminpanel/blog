@@ -40,8 +40,8 @@ class PostController extends Controller
                 ->addColumn('action', function ($post) {
                     return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
                 })
-                ->addColumn('short_description', function ($post) {
-                    return ((strlen(strip_tags($post->description)) > 130) ? (mb_substr(strip_tags($post->description), 0, 130).'...') : strip_tags($post->description));
+                ->addColumn('short_trim_description', function ($post) {
+                    return ((strlen(strip_tags($post->short_description)) > 130) ? (mb_substr(strip_tags($post->short_description), 0, 130).'...') : strip_tags($post->short_description));
                 })
                 ->addIndexColumn()
                 ->rawColumns(['action'])
@@ -66,6 +66,7 @@ class PostController extends Controller
         $post = new Post;
         $post->featured = ($request->has('featured') && $request->input('featured') == 'on') ? true : false;
         $post->title = $request->input('title');
+        $post->short_description = $request->input('short_description');
         $post->description = $request->input('description');
         $post->user_id = auth()->user()->id;
         $post->category_id = $request->input('category');
@@ -131,6 +132,7 @@ class PostController extends Controller
         {
             $post->featured = ($request->has('featured') && $request->input('featured') == 'on') ? true : false;
             $post->title = $request->input('title');
+            $post->short_description = $request->input('short_description');
             $post->description = $request->input('description');
             $post->user_id = auth()->user()->id;
             $post->category_id = $request->input('category');
@@ -184,8 +186,8 @@ class PostController extends Controller
                 ->addColumn('action', function ($post) {
                     return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
                 })
-                ->addColumn('short_description', function ($post) {
-                    return ((strlen(strip_tags($post->description)) > 100) ? (mb_substr(strip_tags($post->description), 0, 100).'...') : strip_tags($post->description));
+                ->addColumn('short_trim_description', function ($post) {
+                    return ((strlen(strip_tags($post->short_description)) > 100) ? (mb_substr(strip_tags($post->short_description), 0, 100).'...') : strip_tags($post->short_description));
                 })
                 ->addIndexColumn()
                 ->rawColumns(['action'])

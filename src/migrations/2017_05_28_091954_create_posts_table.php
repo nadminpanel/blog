@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->text('title');
             $table->text('slug')->nullable();
+            $table->text('short_description');
             $table->longText('description');
             $table->boolean('featured')->default(false);
             $table->Integer('category_id')->unsigned();

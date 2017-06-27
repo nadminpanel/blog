@@ -1,5 +1,5 @@
 @if( NAdminPanel\AdminPanel\Models\PermissionLabel::exists('tag') && (\Auth::user()->hasPermissionTo('show tag') || \Auth::user()->hasPermissionTo('create tag') || \Auth::user()->hasRole('developer')))
-<li class="{{ active_check(config('nadminpanel.admin_backend_prefix').'/tag', true) }} treeview">
+<li class="{{ active_route('tag.*') }} treeview">
     <a href="#">
         <i class="fa fa-tags"></i>
         <span>Tags</span>

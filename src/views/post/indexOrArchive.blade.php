@@ -62,7 +62,7 @@
                 columns: [
                     { data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false, searchable: false },
                     { data: 'title', name: 'title'},
-                    { data: 'short_description', name: 'short_description', orderable: false, searchable: false},
+                    { data: 'short_trim_description', name: 'short_trim_description', orderable: false, searchable: false},
                     { data: 'action', name : 'action', orderable: false, searchable: false}
                 ],
                 order: [[ 1, "asc" ]]

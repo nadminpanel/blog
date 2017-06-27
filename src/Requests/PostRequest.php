@@ -3,6 +3,7 @@
 namespace NAdminPanel\Blog\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use NAdminPanel\Blog\Models\Post;
 
 class PostRequest extends FormRequest
 {
@@ -13,7 +14,15 @@ class PostRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $id = $this->route('post');
+        $user = auth()->user();
+
+        if($this->method() == 'PUT' || $this->method() == 'PATCH') {
+            $post = Post::find($id);
+            return (($user->hasPermissionTo('edit post') && $post->isOwner()) || $user->hasRole('developer'));
+        }
+
+        return ($user->hasPermissionTo('create post') || $user->hasRole('developer'));
     }
 
     /**
@@ -23,7 +32,7 @@ class PostRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->route()->parameter('post');
+        $id = $this->route('post');
 
         if($this->method() == 'PUT' || $this->method() == 'PATCH') {
 
@@ -40,6 +49,8 @@ class PostRequest extends FormRequest
         return [
             'title'     =>  $name,
             'slug'      =>  $slug,
+            'short_description' => 'required',
+            'description' => 'required',
             'published_at' => 'required'
         ];
     }

@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-3 control-label">Name<span class="text-red">&nbsp;*</span></label>
                     <div class="col-md-6">
-                        <input type="text" name="name" id="name" placeholder="Enter Name" value="{{ (old('name') != null) ? old('name') : (isset($tag->name) ? $tag->name : '') }}" class="form-control" />
+                        <input type="text" name="name" id="name" placeholder="Enter Name" value="{{ old('name', $tag->name ?? '') }}" class="form-control" />
                         @if($errors->has('name'))
                             <span class="text-red">{{ $errors->first('name') }}</span>
                         @endif
@@ -52,7 +52,7 @@
                 <div class="form-group">
                     <label for="description" class="col-md-3 control-label">Description</label>
                     <div class="col-md-6">
-                        <textarea class="form-control" name="description" id="description">{{ (old('description') != null) ? old('description') : (isset($tag->description) ? $tag->description : '') }}</textarea>
+                        <textarea class="form-control" name="description" id="description">{{ old('description', $tag->description ?? '') }}</textarea>
                         @if($errors->has('description'))
                             <span class="text-red">{{ $errors->first('description') }}</span>
                         @endif

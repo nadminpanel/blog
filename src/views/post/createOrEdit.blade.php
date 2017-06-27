@@ -65,7 +65,7 @@
                 <div class="form-group">
                     <label for="title" class="col-md-2 control-label">Title<span class="text-red">&nbsp;*</span></label>
                     <div class="col-md-9">
-                        <input type="text" name="title" id="title" placeholder="Enter Title" value="{{ (old('title') != null) ? old('title') : (isset($post->title) ? $post->title : '') }}" class="form-control" />
+                        <input type="text" name="title" id="title" placeholder="Enter Title" value="{{ old('title',  $post->title ?? '') }}" class="form-control" />
                         @if($errors->has('title'))
                             <span class="text-red">{{ $errors->first('title') }}</span>
                         @endif
@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <label for="title" class="col-md-2 control-label">Slug</label>
                     <div class="col-md-9">
-                        <input type="text" name="slug" id="slug" placeholder="your-slug-link-like-this (optional)" value="{{ (old('slug') != null) ? old('slug') : (isset($post->slug) ? $post->slug : '') }}" class="form-control" />
+                        <input type="text" name="slug" id="slug" placeholder="your-slug-link-like-this (optional)" value="{{ old('slug',  $post->slug ?? '') }}" class="form-control" />
                         @if($errors->has('slug'))
                             <span class="text-red">{{ $errors->first('slug') }}</span>
                         @endif
@@ -83,9 +83,19 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="description" class="col-md-2 control-label">Short Description<span class="text-red">&nbsp;*</span></label>
+                    <div class="col-md-9">
+                        <textarea rows="3" name="short_description" id="short_description" class="form-control">{{ old('short_description',  $post->short_description ?? '') }}</textarea>
+                        @if($errors->has('short_description'))
+                            <span class="text-red">{{ $errors->first('short_description') }}</span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="description" class="col-md-2 control-label">Description<span class="text-red">&nbsp;*</span></label>
                     <div class="col-md-9">
-                        <div style="display: none" id="summernote">{{ (old('description') != null) ? old('description') : (isset($post->description) ? $post->description : '') }}</div>
+                        <div style="display: none" id="summernote">{{ old('description',  $post->description ?? '') }}</div>
                         <input type="hidden" name="description" id="description" value=""/>
                         @if($errors->has('description'))
                             <span class="text-red">{{ $errors->first('description') }}</span>
@@ -129,7 +139,7 @@
                 <div class="form-group">
                     <label for="source" class="col-md-2 control-label">Source</label>
                     <div class="col-md-9">
-                        <input type="text" name="source" id="source" placeholder="Enter Source" value="{{ (old('source') != null) ? old('source') : (isset($post->source) ? $post->source : '') }}" class="form-control" />
+                        <input type="text" name="source" id="source" placeholder="Enter Source" value="{{ old('source',  $post->source ?? '') }}" class="form-control" />
                         @if($errors->has('source'))
                             <span class="text-red">{{ $errors->first('source') }}</span>
                         @endif

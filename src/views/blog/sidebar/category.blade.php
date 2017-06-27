@@ -1,5 +1,5 @@
 @if( NAdminPanel\AdminPanel\Models\PermissionLabel::exists('category') && (\Auth::user()->hasPermissionTo('show category') || \Auth::user()->hasPermissionTo('create category') || \Auth::user()->hasRole('developer')))
-<li class="{{ active_check(config('nadminpanel.admin_backend_prefix').'/category', true) }} treeview">
+<li class="{{ active_route('category.*') }} treeview">
     <a href="#">
         <i class="fa fa-th-list"></i>
         <span>Categories</span>

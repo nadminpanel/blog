@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-3 control-label">Name<span class="text-red">&nbsp;*</span></label>
                     <div class="col-md-6">
-                        <input type="text" name="name" id="name" placeholder="Enter Name" value="{{ (old('name') != null) ? old('name') : (isset($category->name) ? $category->name : '') }}" class="form-control" />
+                        <input type="text" name="name" id="name" placeholder="Enter Name" value="{{ old('name', $category->name ?? '') }}" class="form-control" />
                         @if($errors->has('name'))
                             <span class="text-red">{{ $errors->first('name') }}</span>
                         @endif

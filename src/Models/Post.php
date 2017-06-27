@@ -52,6 +52,12 @@ class Post extends Model
         }
     }
 
+    public function isOwner(User $user = null)
+    {
+        $user = $user ?? auth()->user();
+        return $this->user() === $user;
+    }
+
     /**
      * Get the options for generating the slug.
      */
