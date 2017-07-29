@@ -28,13 +28,7 @@ class CategoryController extends Controller
 
         if ($request->ajax()) {
             $query = Category::all();
-            return Datatables::of($query)
-                ->addColumn('action', function ($category) {
-                    return view($this->viewDir . 'blog.datatable.category', compact('category'))->render();
-                })
-                ->addIndexColumn()
-                ->rawColumns(['action'])
-                ->make(true);
+            return $this->datatable($query);
         }
         return view($this->viewDir . 'category.indexOrArchive');
     }
@@ -100,13 +94,7 @@ class CategoryController extends Controller
 
         if($request->ajax()){
             $query = Category::onlyTrashed()->get();
-            return Datatables::of($query)
-                ->addColumn('action', function ($category) {
-                    return view($this->viewDir.'blog.datatable.category', compact('category'))->render();
-                })
-                ->addIndexColumn()
-                ->rawColumns(['action'])
-                ->make(true);
+            return $this->datatable($query);
         }
         return view($this->viewDir.'category.indexOrArchive');
     }
@@ -129,5 +117,16 @@ class CategoryController extends Controller
         if ($request->ajax()) {
             return response()->json(['status'=>'deleted']);
         }
+    }
+
+    private function datatable($query)
+    {
+        return Datatables::of($query)
+            ->addColumn('action', function ($category) {
+                return view($this->viewDir . 'blog.datatable.category', compact('category'))->render();
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }

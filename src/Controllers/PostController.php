@@ -36,16 +36,7 @@ class PostController extends Controller
             } else {
                 $query = Post::where('user_id', $user->id)->get()->all();
             }
-            return Datatables::of($query)
-                ->addColumn('action', function ($post) {
-                    return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
-                })
-                ->addColumn('short_trim_description', function ($post) {
-                    return ((strlen(strip_tags($post->short_description)) > 130) ? (mb_substr(strip_tags($post->short_description), 0, 130).'...') : strip_tags($post->short_description));
-                })
-                ->addIndexColumn()
-                ->rawColumns(['action'])
-                ->make(true);
+            return $this->datatable($query);
         }
         return view($this->viewDir . 'post.indexOrArchive');
     }
@@ -182,16 +173,7 @@ class PostController extends Controller
 
         if ($request->ajax()) {
             $query = Post::onlyTrashed()->get();
-            return Datatables::of($query)
-                ->addColumn('action', function ($post) {
-                    return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
-                })
-                ->addColumn('short_trim_description', function ($post) {
-                    return ((strlen(strip_tags($post->short_description)) > 100) ? (mb_substr(strip_tags($post->short_description), 0, 100).'...') : strip_tags($post->short_description));
-                })
-                ->addIndexColumn()
-                ->rawColumns(['action'])
-                ->make(true);
+            return $this->datatable($query);
         }
 
         return view($this->viewDir.'post.indexOrArchive');
@@ -229,5 +211,19 @@ class PostController extends Controller
         } else {
             return redirect()->to(config('nadminpanel.admin_landing_link'));
         }
+    }
+
+    private function datatable($query)
+    {
+        return Datatables::of($query)
+            ->addColumn('action', function ($post) {
+                return view($this->viewDir . 'blog.datatable.post', compact('post'))->render();
+            })
+            ->addColumn('short_trim_description', function ($post) {
+                return ((strlen(strip_tags($post->short_description)) > 100) ? (mb_substr(strip_tags($post->short_description), 0, 100).'...') : strip_tags($post->short_description));
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }

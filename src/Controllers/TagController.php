@@ -28,13 +28,7 @@ class TagController extends Controller
 
         if ($request->ajax()) {
             $query = Tag::all();
-            return Datatables::of($query)
-                ->addColumn('action', function ($tag) {
-                    return view($this->viewDir . 'blog.datatable.tag', compact('tag'))->render();
-                })
-                ->addIndexColumn()
-                ->rawColumns(['action'])
-                ->make(true);
+            return $this->datatable($query);
         }
         return view($this->viewDir . 'tag.indexOrArchive');
     }
@@ -129,5 +123,16 @@ class TagController extends Controller
         if ($request->ajax()) {
             return response()->json(['status'=>'deleted']);
         }
+    }
+
+    private function datatable($query)
+    {
+        return Datatables::of($query)
+            ->addColumn('action', function ($tag) {
+                return view($this->viewDir . 'blog.datatable.tag', compact('tag'))->render();
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }

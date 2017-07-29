@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/sliptree-bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/plugins/sliptree-bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css') }}">
     <style>
-        .note-editor > .form-group {
+        .note-editor .form-group {
             margin-right: 0px !important;
             margin-left: 0px !important;
         }
